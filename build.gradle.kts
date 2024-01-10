@@ -1,9 +1,10 @@
 plugins {
     kotlin("jvm") version "1.9.21"
+    application
 }
 
-group = "org.example"
-version = "1.0-SNAPSHOT"
+group = "ru.knpp.aseto"
+version = "1.0"
 
 repositories {
     mavenCentral()
@@ -18,4 +19,18 @@ tasks.test {
 }
 kotlin {
     jvmToolchain(11)
+}
+
+application {
+    mainClass.set("ru.knpp.aseto.fileosmonitor.MainKt")
+}
+
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = "ru.knpp.aseto.fileosmonitor.MainKt"
+    }
+    configurations["compileClasspath"].forEach { file: File ->
+        from(zipTree(file.absoluteFile))
+    }
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
